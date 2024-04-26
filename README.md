@@ -16,17 +16,17 @@
 
 ----
 ###  📖 Explain
-A program that solves a 16 x 16 sudoku </br>
+* A program that solves a 16 x 16 sudoku </br>
 consisting of the letters 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F, G.
 
 ### ️ ️✏️ Input
-Given squares: 1 to 9 or A to G
-Blank spaces: 0
+* Given squares: 1 to 9 or A to G
+* Blank spaces: 0
 
 ### 👉🏻 Other notes
-The English language is not case-sensitive.</br>
-You can type with or without spaces (see example input).</br>
-If there is an error in your input or the question does not have a correct answer, </br>
+* The English language is not case-sensitive.</br>
+* You can type with or without spaces (see example input).</br>
+* If there is an error in your input or the question does not have a correct answer,
 you will receive a message that there is no correct answer.
 
 -----
