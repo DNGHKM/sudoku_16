@@ -11,36 +11,53 @@ public class Sudoku_16 {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         inputArr = new char[16][16];
         solveArr = new char[16][16];
+
+        // 입력 받기
         for (int i = 0; i < 16; i++) {
-            String input = br.readLine().toUpperCase().replace(" ", "");
+            String input = br.readLine().toUpperCase().replaceAll(" ", "");
             for (int j = 0; j < 16; j++) {
                 inputArr[i][j] = input.charAt(j);
             }
         }
+
+        // 입력 복사
         for (int i = 0; i < 16; i++) {
             System.arraycopy(inputArr[i], 0, solveArr[i], 0, 16);
         }
+
         complete = true;
         solve(0, 0, 0);
+
         boolean finish = true;
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 if (solveArr[i][j] == '0') {
                     finish = false;
-                    bw.write("정답이 없는 문제거나 입력 오류입니다.");
+                    bw.write("정답이 없는 문제거나 입력 오류입니다.\nThe question doesn't have a correct answer or is a typing error.");
                     break;
                 }
             }
-            if(!finish) break;
+            if (!finish) break;
         }
-        if(finish) {
+
+        if (finish) {
+            bw.write("<RESULT> \n");
+            bw.write("――――――――――――――――――――――――\n");
             for (int i = 0; i < 16; i++) {
+                bw.write("│ ");
                 for (int j = 0; j < 16; j++) {
                     bw.write(solveArr[i][j] + " ");
+                    if ((j + 1) % 4 == 0) {
+                        bw.write("│ ");
+                    }
+                }
+                if ((i + 1) % 4 == 0) {
+                    bw.write("\n――――――――――――――――――――――――");
                 }
                 bw.write("\n");
             }
         }
+
         bw.flush();
     }
 
@@ -59,10 +76,7 @@ public class Sudoku_16 {
         } else if (x == 15) {
             solve(y + 1, 0, 0);
         }
-        if (!complete) {
-            if (inputArr[y][x] != '0') {
-                return;
-            }
+        if (!complete && inputArr[y][x] == '0') {
             solveArr[y][x] = '0';
             solve(y, x, index + 1);
         }
@@ -75,43 +89,51 @@ public class Sudoku_16 {
         Arrays.fill(nums, true);
         Arrays.fill(alphabet, true);
         nums[0] = false;
+
         for (int i = 0; i < 16; i++) {
-            if ('0' <= solveArr[y][i] && solveArr[y][i] <= '9') {
-                nums[solveArr[y][i] - '0'] = false;
+            char currChar = solveArr[y][i];
+            if ('0' <= currChar && currChar <= '9') {
+                nums[currChar - '0'] = false;
             } else {
-                alphabet[solveArr[y][i] - 'A'] = false;
-            }
-            if ('0' <= solveArr[i][x] && solveArr[i][x] <= '9') {
-                nums[solveArr[i][x] - '0'] = false;
-            } else {
-                alphabet[solveArr[i][x] - 'A'] = false;
+                alphabet[currChar - 'A'] = false;
             }
 
+            currChar = solveArr[i][x];
+            if ('0' <= currChar && currChar <= '9') {
+                nums[currChar - '0'] = false;
+            } else {
+                alphabet[currChar - 'A'] = false;
+            }
         }
+
         for (int i = y / 4 * 4; i < y / 4 * 4 + 4; i++) {
             for (int j = x / 4 * 4; j < x / 4 * 4 + 4; j++) {
-                if ('0' <= solveArr[i][j] && solveArr[i][j] <= '9') {
-                    nums[solveArr[i][j] - '0'] = false;
+                char currChar = solveArr[i][j];
+                if ('0' <= currChar && currChar <= '9') {
+                    nums[currChar - '0'] = false;
                 } else {
-                    alphabet[solveArr[i][j] - 'A'] = false;
+                    alphabet[currChar - 'A'] = false;
                 }
             }
         }
+
         ArrayList<Character> list = new ArrayList<>();
         for (int i = 0; i < nums.length; i++) {
             if (nums[i]) {
                 list.add((char) (i + '0'));
             }
         }
+
         for (int i = 0; i < alphabet.length; i++) {
             if (alphabet[i]) {
                 list.add((char) (i + 'A'));
             }
         }
-        if (index > list.size() - 1) {
+
+        if (index < list.size()) {
+            solveArr[y][x] = list.get(index);
+        } else {
             complete = false;
-            return;
         }
-        solveArr[y][x] = list.get(index);
     }
 }
